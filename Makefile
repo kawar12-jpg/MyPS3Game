@@ -1,0 +1,6 @@
+TARGET		:= MyPS3Game
+TITLE		:= Kurdish PS3 Game
+APPID		:= TEST00001
+CONTENTID	:= UP0001-$(APPID)_00-0000000000000000
+
+include $(PSL1GHT)/samples/Rules.mk
