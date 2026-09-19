@@ -5,15 +5,14 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ghcr.io/ps3dev/ps3dev:master
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Compile PKG
+    - name: Build in Docker
       run: |
-        make pkg
+        docker run --rm -v $(pwd):/src -w /src bucanero/ps3dev:latest make pkg
 
     - name: Upload PKG File
       uses: actions/upload-artifact@v4
