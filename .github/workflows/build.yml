@@ -1,24 +1,21 @@
-name: Build PS3 PKG
+name: Test PS3 Images
 
 on: [push, workflow_dispatch]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    container: ghcr.io/ps3dev/ps3dev:latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
-
-    - name: Compile PKG
+    - name: Check which image exists
       run: |
-        export PS3DEV=/usr/local/ps3dev
-        export PSL1GHT=/usr/local/ps3dev
-        make pkg
-
-    - name: Upload PKG File
-      uses: actions/upload-artifact@v4
-      with:
-        name: PS3-Game-PKG
-        path: "*.pkg"
+        for img in \
+          ghcr.io/ps3dev/ps3dev:latest \
+          ps3dev/ps3dev:latest \
+          ghcr.io/bucanero/ps3dev:latest \
+          ghcr.io/ps3dev/psl1ght:latest ; do
+          if docker pull "$img" > /dev/null 2>&1; then
+            echo "✅ HEYE: $img"
+          else
+            echo "❌ NINE: $img"
+          fi
+        done
